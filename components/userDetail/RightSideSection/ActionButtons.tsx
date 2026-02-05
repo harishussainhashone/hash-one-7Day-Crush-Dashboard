@@ -60,21 +60,23 @@ export function ActionButtons({
     <div className="bg-white rounded-2xl shadow-lg p-6">
       <h3 className="font-semibold text-gray-800 mb-4">User Actions</h3>
 
-      <div className="space-y-3">
+      <div className="space-y-5"> {/* Increased spacing to prevent outlines from overlapping */}
         {/* BLOCK / UNBLOCK */}
         <button
           onClick={handleToggleBlock}
-          className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition
+          className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white transition-all 
+            outline outline-2 outline-offset-[-4px] outline-white/60
+            border-[3px] border-transparent
             ${
               user.isBlocked
-                ? "bg-green-600 hover:bg-green-700 text-white"
-                : "bg-yellow-600 hover:bg-yellow-700 text-white"
+                ? "bg-green-600 hover:bg-green-700 shadow-[0_0_0_2px_rgba(22,163,74,1)]"
+                : "bg-blue-500 hover:bg-blue-600 shadow-[0_0_0_2px_rgba(59,130,246,1)]"
             }`}
         >
           {user.isBlocked ? (
-            <Unlock className="h-4 w-4" />
+            <Unlock className="h-4 w-4 text-white" />
           ) : (
-            <Lock className="h-4 w-4" />
+            <Lock className="h-4 w-4 text-white" />
           )}
           {user.isBlocked ? "Unblock User" : "Block User"}
         </button>
@@ -82,9 +84,13 @@ export function ActionButtons({
         {/* DELETE USER */}
         <button
           onClick={handleDeleteUser}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white transition-all 
+            bg-red-600 hover:bg-red-700
+            outline outline-2 outline-offset-[-4px] outline-white/60
+            border-[3px] border-transparent
+            shadow-[0_0_0_2px_rgba(220,38,38,1)]"
         >
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className="h-4 w-4 text-white" />
           Delete User
         </button>
       </div>

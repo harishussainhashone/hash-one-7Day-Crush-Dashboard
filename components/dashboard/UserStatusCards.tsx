@@ -11,6 +11,15 @@ interface User {
   isVerified: boolean;
 }
 
+// Jumping Dots Sub-component
+const JumpingDots = () => (
+  <span className="flex items-center gap-1 h-8">
+    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+    <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+  </span>
+);
+
 export default function UserStatsCard() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -22,17 +31,10 @@ export default function UserStatsCard() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await apiFetch("/users", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch users`);
-      }
-
+      const response = await apiFetch("/users", { method: "GET" });
+      if (!response.ok) throw new Error(`Failed to fetch users`);
       const usersData: User[] = await response.json();
       setUsers(usersData);
-
     } catch (err) {
       console.error("Error fetching users:", err);
       setUsers([]);
@@ -46,37 +48,32 @@ export default function UserStatsCard() {
     const active = users.filter((u) => !u.isBlocked).length;
     const blocked = users.filter((u) => u.isBlocked).length;
     const verified = users.filter((u) => u.isVerified).length;
-
     return { total, active, verified, blocked };
   }, [users]);
 
   const statCards = [
     {
       title: "Total Users",
-      value: loading ? "..." : stats.total,
+      value: stats.total,
       icon: <Users className="h-6 w-6 text-indigo-500" />,
-      color: "text-indigo-600",
       glow: "shadow-[0_0_12px_-4px_rgba(99,102,241,0.4)]",
     },
     {
       title: "Active Users",
-      value: loading ? "..." : stats.active,
+      value: stats.active,
       icon: <UserCheck className="h-6 w-6 text-emerald-500" />,
-      color: "text-emerald-600",
       glow: "shadow-[0_0_12px_-4px_rgba(16,185,129,0.4)]",
     },
     {
       title: "Verified Users",
-      value: loading ? "..." : stats.verified,
+      value: stats.verified,
       icon: <UserCircle className="h-6 w-6 text-blue-500" />,
-      color: "text-blue-600",
       glow: "shadow-[0_0_12px_-4px_rgba(59,130,246,0.4)]",
     },
     {
       title: "Blocked Users",
-      value: loading ? "..." : stats.blocked,
+      value: stats.blocked,
       icon: <UserX className="h-6 w-6 text-rose-500" />,
-      color: "text-rose-600",
       glow: "shadow-[0_0_12px_-4px_rgba(244,63,94,0.4)]",
     },
   ];
@@ -86,13 +83,10 @@ export default function UserStatsCard() {
       {statCards.map((stat) => (
         <div
           key={stat.title}
-          className={`group relative bg-white/70 backdrop-blur-xl border border-gray-100 rounded-xl px-5 py-4 flex flex-col items-start justify-center transition-all duration-300 hover:bg-white hover:shadow-md hover:-translate-y-[2px]`}
+          className="group relative bg-white/70 backdrop-blur-xl border border-gray-100 rounded-xl px-5 py-4 flex flex-col items-start justify-center transition-all duration-300 hover:bg-white hover:shadow-md hover:-translate-y-[2px]"
         >
-          {/* Icon + Title Row */}
           <div className="flex items-center gap-3">
-            <div
-              className={`p-2.5 rounded-lg bg-white shadow-sm ${stat.glow}`}
-            >
+            <div className={`p-2.5 rounded-lg bg-white shadow-sm ${stat.glow}`}>
               {stat.icon}
             </div>
             <span className="text-sm text-gray-500 group-hover:text-gray-700 transition-colors">
@@ -100,13 +94,8 @@ export default function UserStatsCard() {
             </span>
           </div>
 
-          {/* Value */}
           <h3 className="mt-3 text-2xl font-semibold text-gray-800 tracking-tight group-hover:text-gray-900">
-            {loading ? (
-              <div className="h-8 w-12 bg-gray-200 animate-pulse rounded"></div>
-            ) : (
-              stat.value
-            )}
+            {loading ? <JumpingDots /> : stat.value.toLocaleString()}
           </h3>
         </div>
       ))}

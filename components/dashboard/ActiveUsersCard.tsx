@@ -30,13 +30,12 @@ export default function ActiveUsersCard() {
 
       const users: User[] = await response.json();
       
-      // Count users that are not blocked (active users)
       const activeUsers = users.filter(user => !user.isBlocked);
       setActiveUsersCount(activeUsers.length);
 
     } catch (err) {
       console.error("Error fetching active users:", err);
-      setActiveUsersCount(0); // Set to 0 on error
+      setActiveUsersCount(0); 
     } finally {
       setLoading(false);
     }
@@ -48,7 +47,6 @@ export default function ActiveUsersCard() {
       <div className="absolute -top-8 -left-8 w-48 h-28 bg-green-400/20 rounded-full blur-3xl"></div>
 
       <div className="relative p-4 flex flex-col gap-4">
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-xl bg-gradient-to-br from-green-500 to-emerald-400 text-white shadow-md shadow-green-200">
@@ -59,11 +57,8 @@ export default function ActiveUsersCard() {
                 Active Users
               </p>
               <h3 className="text-4xl font-semibold text-gray-900 tracking-tight">
-                {loading ? (
-                  <div className="h-10 w-16 bg-gray-200 animate-pulse rounded"></div>
-                ) : (
-                  activeUsersCount.toLocaleString()
-                )}
+                {/* Fixed logic: No more gray bg, just shows 00 while loading */}
+                {loading ? "..." : activeUsersCount.toLocaleString()}
               </h3>
             </div>
           </div>

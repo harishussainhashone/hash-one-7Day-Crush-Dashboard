@@ -197,6 +197,13 @@ export default function UserDetailPage() {
 
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
+          {/* Action Buttons */}
+          <ActionButtons 
+            user={user}
+            onToggleBlock={toggleBlock}
+            onDelete={deleteUser}
+             />
+
           {/* Quick Stats */}
           <QuickStats 
             user={user} 
@@ -206,22 +213,17 @@ export default function UserDetailPage() {
 
           {/* Contact Info */}
           <ContactInfo user={user} age={age} />
+          
+                    {/* Account Status */}
+                    <AccountStatus user={user} />
 
           {/* Interests */}
           {user.interests && user.interests.length > 0 && (
             <Interests interests={user.interests} />
           )}
 
-          {/* Account Status */}
-          <AccountStatus user={user} />
-
-          {/* Action Buttons */}
-          <ActionButtons 
-            user={user}
-            onToggleBlock={toggleBlock}
-            onDelete={deleteUser}
            
-          />
+         
         </div>
       </div>
     </div>

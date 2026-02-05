@@ -2,7 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
-import { apiFetch } from "@/lib/apiFetch"; // your apiFetch helper
+import { apiFetch } from "@/lib/apiFetch"; 
+
+// Reusable Jumping Dots Sub-component
+const JumpingDots = () => (
+  <span className="flex items-center gap-1 h-8">
+    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full animate-bounce"></span>
+  </span>
+);
 
 export default function DashboardCard() {
   const [totalUsers, setTotalUsers] = useState<number>(0);
@@ -12,11 +21,11 @@ export default function DashboardCard() {
   useEffect(() => {
     const fetchTotalUsers = async () => {
       try {
-        const res = await apiFetch("/users"); // your endpoint
+        const res = await apiFetch("/users"); 
         if (!res.ok) throw new Error("Failed to fetch users");
 
         const data = await res.json();
-        setTotalUsers(data.length); // count of users
+        setTotalUsers(data.length); 
       } catch (err: any) {
         setError(err.message || "Something went wrong");
       } finally {
@@ -39,7 +48,14 @@ export default function DashboardCard() {
                 TOTAL USERS
               </div>
               <div className="text-2xl font-bold text-gray-700">
-                {loading ? "..." : error ? "Error" : totalUsers}
+                {/* Logic updated: Shows jumping dots while loading */}
+                {loading ? (
+                  <JumpingDots />
+                ) : error ? (
+                  <span className="text-sm text-red-500">Error</span>
+                ) : (
+                  totalUsers.toLocaleString()
+                )}
               </div>
             </div>
             <User className="h-8 w-8 text-purple-600" />
